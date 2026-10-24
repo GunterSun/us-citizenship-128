@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>美国公民入籍考试 128 题全真复习指南 (2026最新官方双语标准版)</title>
+  <meta name="description" content="专为华人打造的美国入籍考试128题复习APP，支持中英双语对照、原声发音朗读、随身磨耳朵循环、长者20题专区、3D抽认卡、全真模拟考场及各州官员自选定制。可在手机、平板和电脑端流畅使用。">
+  
+  <!-- Web App & PWA Settings -->
+  <meta name="theme-color" content="#0F172A">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="公民入籍128">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" href="assets/icons/favicon.png">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body>
+
+  <!-- Top Sticky Header -->
+  <header class="site-header">
+    <div class="header-content">
+      <div class="brand-section">
+        <div class="brand-badge">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          </svg>
+        </div>
+        <div class="brand-title">
+          <h1>
+            美国公民入籍考试 128 题
+            <span class="tag-version">2026 官方标准</span>
+          </h1>
+          <div class="brand-subtitle">中英双语对照 · 标准真人语音发音 · 智能随身备考</div>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button class="btn-icon" id="btn-open-state-settings" title="切换您所在州现任州长、参议员等">
+          🏛️ <span class="text-hide-mobile">本州官员定制</span>
+        </button>
+        <button class="btn-icon" id="btn-open-share" title="手机扫码在任何手机平板上打开">
+          📱 <span class="text-hide-mobile">手机扫码打开</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="app-container">
+
+    <!-- Mode Navigation Tabs -->
+    <div class="nav-tabs-wrapper">
+      <nav class="nav-tabs" role="tablist">
+        <button class="tab-btn active" data-tab="list" role="tab">
+          📖 列表精读
+        </button>
+        <button class="tab-btn" data-tab="flashcard" role="tab">
+          🗂️ 记忆抽认卡
+        </button>
+        <button class="tab-btn" data-tab="exam" role="tab">
+          🎯 全真模拟考
+        </button>
+        <button class="tab-btn" data-tab="mistakes" role="tab">
+          📕 错题巩固
+          <span class="badge-pill" id="badge-mistakes-count">0</span>
+        </button>
+      </nav>
+    </div>
+
+    <!-- Official Guidance Banner -->
+    <section class="info-banner">
+      <div class="info-banner-left">
+        <div class="info-banner-icon">⭐</div>
+        <div class="info-banner-text">
+          <h3>65/20 长者特别优待提示 & 备考建议</h3>
+          <p>
+            凡年龄 65 岁以上且持绿卡满 20 年的申请人，仅需复习带星号 (⭐) 的 <strong>20 道核心必背题</strong>，并可用中文作答；其他普通考生需准备全部 128 题（口试抽考 20 题，答对 12 题即可通过）。
+          </p>
+        </div>
+      </div>
+      <div class="info-banner-actions">
+        <div id="stats-summary" style="font-size:0.82rem; color:var(--text-muted); text-align:right;">
+          已掌握: 0/128
+        </div>
+      </div>
+    </section>
+
+    <!-- Search & Filter Controls -->
+    <section class="filter-bar">
+      <!-- Search Input -->
+      <div class="search-input-wrapper">
+        <svg viewBox="0 0 24 24">
+          <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+        </svg>
+        <input type="text" id="search-input" class="search-input" placeholder="搜索题号、英文关键词、中文释义 (如: 总统、Constitution, 1787)...">
+        <button class="search-clear" id="search-clear">✕</button>
+      </div>
+
+      <!-- Quick Filter Chips -->
+      <div class="chip-filters">
+        <button class="chip-btn active" data-filter="all">全部 128 题</button>
+        <button class="chip-btn" data-filter="starred">⭐ 长者核心 20 题</button>
+        <button class="chip-btn" data-filter="part1">板块一: 美国政府 (1-64)</button>
+        <button class="chip-btn" data-filter="part2">板块二: 美国历史 (65-108)</button>
+        <button class="chip-btn" data-filter="part3">板块三: 标志与假日 (109-128)</button>
+        <button class="chip-btn" data-filter="bookmarks">★ 我的收藏 (<span id="badge-bookmarks-count">0</span>)</button>
+      </div>
+
+      <!-- Custom Switch Toggles -->
+      <div class="toggles-group">
+        <label class="toggle-label">
+          <input type="checkbox" id="toggle-hide-chinese">
+          <span>隐藏中文翻译 (自测听力与自我默背)</span>
+        </label>
+        
+        <label class="toggle-label">
+          <input type="checkbox" id="toggle-senior-mode">
+          <span>长辈大字体关爱模式 (字体增大、高对比度)</span>
+        </label>
+      </div>
+    </section>
+
+    <!-- ==============================================
+         TAB 1: 列表精读模式 (List View)
+         ============================================== -->
+    <section class="tab-pane" id="tab-pane-list">
+      <div id="question-list-container" class="question-list">
+        <!-- Javascript dynamic rendering -->
+      </div>
+    </section>
+
+    <!-- ==============================================
+         TAB 2: 记忆抽认卡 (Flashcard 3D Mode)
+         ============================================== -->
+    <section class="tab-pane" id="tab-pane-flashcard" style="display: none;">
+      <div class="flashcard-section" id="flashcard-container">
+        <!-- Top bar: counter & shuffle -->
+        <div class="fc-controls-top">
+          <span id="fc-counter-text" style="font-size:0.9rem; font-weight:700; color:var(--accent-gold);">
+            卡片 1 / 128
+          </span>
+          <div style="display:flex; gap:8px;">
+            <button class="btn-icon" id="btn-fc-shuffle" title="随机洗牌顺序">
+              🔀 随机打乱
+            </button>
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="fc-progress-bar-wrap">
+          <div class="fc-progress-bar" id="fc-progress-bar"></div>
+        </div>
+
+        <!-- 3D Flip Card Scene -->
+        <div class="flashcard-scene" id="flashcard-scene">
+          <div class="flashcard-inner" id="flashcard-inner">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- Bottom Feedback Buttons -->
+        <div class="fc-actions-bottom">
+          <button class="btn-fc-eval btn-fc-hard" id="btn-fc-hard" title="标记为生疏，自动归入错题本">
+            👎 还需要背 (记入错题)
+          </button>
+          <button class="btn-fc-eval btn-fc-flip" id="btn-fc-prev" title="上一张">
+            ◀ 上一题
+          </button>
+          <button class="btn-fc-eval btn-fc-flip" id="btn-fc-next" title="下一题">
+            下一题 ▶
+          </button>
+          <button class="btn-fc-eval btn-fc-easy" id="btn-fc-easy" title="熟记，标记为已掌握">
+            👍 记住了 (掌握)
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================================
+         TAB 3: 全真模拟考场 (Mock Exam Mode)
+         ============================================== -->
+    <section class="tab-pane" id="tab-pane-exam" style="display: none;">
+      <div class="exam-section">
+
+        <!-- Setup Card -->
+        <div class="exam-setup-card" id="exam-setup-card">
+          <div class="exam-icon-large">🏛️</div>
+          <h2>USCIS 公民入籍全真模拟考场</h2>
+          <p>
+            模拟真实移民局考官口试环境。系统将通过纯正美语语音朗读考题，您可以口头回答后点击翻看答案自我核对，检验自己的真实临场水平。
+          </p>
+
+          <div class="exam-type-grid">
+            <div class="exam-type-card selected" id="btn-exam-mode-standard">
+              <h4>普通考生标准模考</h4>
+              <p>全库 128 题中随机抽测 <strong>20 题</strong>，答对 <strong>12 题</strong> 即为及格通过（对应官方入籍及格线）。</p>
+            </div>
+            <div class="exam-type-card" id="btn-exam-mode-senior">
+              <h4>65/20 长者专享模考</h4>
+              <p>仅在 20 道核心星号题中随机抽取 <strong>10 题</strong>，答对 <strong>6 题</strong> 即算及格通过。</p>
+            </div>
+          </div>
+
+          <button class="btn-start-exam" id="btn-start-exam-action">
+            🚀 开始全真模拟考试
+          </button>
+        </div>
+
+        <!-- Active Exam Card -->
+        <div class="exam-active-card" id="exam-active-card" style="display: none;">
+          <div class="exam-status-bar">
+            <span id="exam-current-count" style="font-weight:700; color:var(--accent-gold);">第 1 / 20 题</span>
+            <div id="exam-score-display" class="exam-score-badge">已答: 0 | 答对: 0 (及格需 12 题)</div>
+          </div>
+
+          <div class="fc-progress-bar-wrap" style="margin-bottom:20px;">
+            <div class="fc-progress-bar" id="exam-progress-bar" style="width: 5%;"></div>
+          </div>
+
+          <div class="exam-question-box">
+            <div class="exam-q-en" id="exam-q-en">What is the supreme law of the land?</div>
+            <div class="exam-q-zh" id="exam-q-zh">美国的最高法律是什么？</div>
+            <div style="margin-top:16px;">
+              <button class="btn-speech" id="btn-exam-repeat-q" style="font-size:0.85rem; padding:6px 14px;">
+                🔊 重新听考官提问
+              </button>
+            </div>
+          </div>
+
+          <!-- Answer Reveal Box -->
+          <div class="exam-answer-reveal" id="exam-answer-reveal">
+            <!-- Dynamic answer content -->
+          </div>
+
+          <div class="exam-actions-grid">
+            <button class="btn-icon" id="btn-exam-reveal-ans" style="flex:1; padding:12px 16px; font-weight:700;">
+              👀 揭晓标准答案
+            </button>
+            <button class="btn-fc-eval btn-fc-hard" id="btn-exam-mark-wrong">
+              ✕ 我答错了
+            </button>
+            <button class="btn-fc-eval btn-fc-easy" id="btn-exam-mark-correct">
+              ✓ 我答对了
+            </button>
+          </div>
+        </div>
+
+        <!-- Exam Result Card -->
+        <div class="exam-result-card" id="exam-result-card" style="display: none;">
+          <!-- Dynamic Results -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==============================================
+         TAB 4: 错题强化 (Mistakes Notebook)
+         ============================================== -->
+    <section class="tab-pane" id="tab-pane-mistakes" style="display: none;">
+      <div id="mistakes-list-container">
+        <!-- Javascript dynamic rendering -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==============================================
+       Sticky Bottom "随身磨耳朵" Audio Player
+       ============================================== -->
+  <aside class="sticky-player-bar" aria-label="随身磨耳朵循环听力播放器">
+    <div class="player-inner">
+      <div class="player-track-info">
+        <div class="player-icon-box" title="随身磨耳朵循环朗读">
+          🎧
+        </div>
+        <div class="player-text-details">
+          <div class="player-track-title" id="player-title">1. What is the form of government...</div>
+          <div class="player-track-sub" id="player-sub">Republic / Representative democracy</div>
+        </div>
+      </div>
+
+      <div class="player-controls">
+        <button class="btn-player-ctrl" id="player-prev-btn" title="上一首">⏮</button>
+        <button class="btn-player-play" id="player-play-btn" title="播放 / 暂停随身连续磨耳朵">▶</button>
+        <button class="btn-player-ctrl" id="player-next-btn" title="下一首">⏭</button>
+        <button class="player-speed-btn" id="player-speed-btn" title="点击切换语速 (0.75x慢速 / 1.0x标准 / 1.25x磨耳朵)">0.9x</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ==============================================
+       Modal: 手机平板扫码打开 (Share Modal)
+       ============================================== -->
+  <div class="modal-overlay" id="share-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>📱 在任何手机 / 平板上打开学习</h3>
+        <button class="modal-close-btn" id="btn-close-share">✕</button>
+      </div>
+      <div class="modal-body" style="text-align: center;">
+        <p style="margin-bottom: 12px;">
+          只需将手机或平板连接到与电脑相同的 Wi-Fi，用<strong>手机相机或微信扫一扫</strong>下方二维码即可立即使用：
+        </p>
+        <div class="qr-code-box">
+          <canvas id="qr-canvas"></canvas>
+        </div>
+        <div style="background:var(--bg-primary); padding:10px; border-radius:8px; font-family:monospace; font-size:0.85rem; color:var(--accent-gold); word-break:break-all; margin-top:8px;" id="lan-url-display">
+          http://192.168.1.67:8128
+        </div>
+        <p style="font-size:0.75rem; color:var(--text-dim); margin-top:12px;">
+          💡 技巧：在 iPhone Safari 中打开后，点击底部分享按钮选择 <strong>“添加到主屏幕”</strong>，即可像下载 App 一样全屏无网络离线使用！
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==============================================
+       Modal: 本州官员自选定制 (State Customizer)
+       ============================================== -->
+  <div class="modal-overlay" id="state-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>🏛️ 自定义您所在州的考官标准答案</h3>
+        <button class="modal-close-btn" id="btn-close-state-modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="margin-bottom: 16px; font-size: 0.85rem;">
+          公民考试中第 23、29、61、62 题因考生居住州不同而答案各异。请选择您的州或直接修改，APP 将自动同步全真考题！
+        </p>
+
+        <form id="state-settings-form">
+          <div class="form-group">
+            <label>快速选用预设华人聚集大州：</label>
+            <select class="form-control" id="state-preset-select">
+              <option value="CA">加州 (California) - 纽森 / Alex Padilla / 萨克拉门托</option>
+              <option value="NY">纽约州 (New York) - 霍楚 / 舒默 / 奥尔巴尼</option>
+              <option value="TX">德州 (Texas) - 阿博特 / 克鲁兹 / 奥斯汀</option>
+              <option value="WA">华盛顿州 (Washington) - 弗格森 / 穆雷 / 奥林匹亚</option>
+              <option value="FL">佛罗里达州 (Florida) - 德桑蒂斯 / 斯科特 / 塔拉哈西</option>
+              <option value="IL">伊利诺伊州 (Illinois) - 普利茨克 / 德宾 / 斯普林菲尔德</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>所在州名称 (State Name)：</label>
+            <input type="text" class="form-control" id="input-state-name" value="加州 (California)">
+          </div>
+
+          <div class="form-group">
+            <label>第 23 题 · 本州联邦参议员 (U.S. Senator)：</label>
+            <input type="text" class="form-control" id="input-state-senator" value="Alex Padilla">
+          </div>
+
+          <div class="form-group">
+            <label>第 29 题 · 本选区国会众议员 (Representative)：</label>
+            <input type="text" class="form-control" id="input-state-rep" value="根据住址邮编核实 (如 Adam Schiff, Ted Lieu, 孟昭文等)">
+          </div>
+
+          <div class="form-group">
+            <label>第 61 题 · 现任州长 (Governor)：</label>
+            <input type="text" class="form-control" id="input-state-gov" value="Gavin Newsom (加州州长纽森)">
+          </div>
+
+          <div class="form-group">
+            <label>第 62 题 · 所在州首府 (Capital)：</label>
+            <input type="text" class="form-control" id="input-state-cap" value="Sacramento (萨克拉门托)">
+          </div>
+
+          <button type="submit" class="btn-start-exam" style="width:100%; margin-top:12px; font-size:1rem; padding:12px;">
+            💾 保存并应用到题库
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="data/questions.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
