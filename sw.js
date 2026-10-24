@@ -1,9 +1,10 @@
-const CACHE_NAME = 'uscis-128-cache-v1';
+const CACHE_NAME = 'uscis-128-cache-v2';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
   './assets/css/app.css',
   './assets/js/app.js',
+  './assets/js/qrcode.min.js',
   './data/questions.js',
   './data/questions.json',
   './manifest.json',

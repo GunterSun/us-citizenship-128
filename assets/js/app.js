@@ -865,20 +865,49 @@
   // ==========================================
   // 7. 手机扫码与分享弹窗
   // ==========================================
+  let qrCodeInstance = null;
+  const PUBLIC_APP_URL = "https://guntersun.github.io/us-citizenship-128/";
+
   function setupQRCodeModal() {
     const modal = document.getElementById('share-modal');
     const openBtn = document.getElementById('btn-open-share');
     const closeBtn = document.getElementById('btn-close-share');
-    const qrCanvas = document.getElementById('qr-canvas');
-    const urlDisplay = document.getElementById('lan-url-display');
+    const qrContainer = document.getElementById('qrcode-render-target');
+    const publicUrlDisplay = document.getElementById('public-url-display');
+    const lanUrlDisplay = document.getElementById('lan-url-display');
+    const copyBtn = document.getElementById('btn-copy-public-link');
 
     if (!modal) return;
 
+    function renderRealQRCode() {
+      // 优先使用公网永久 HTTPS 网址，保证任何手机只要扫码就能直接打开
+      const targetUrl = PUBLIC_APP_URL;
+      if (publicUrlDisplay) publicUrlDisplay.innerText = targetUrl;
+      if (lanUrlDisplay && window.location.hostname !== 'guntersun.github.io') {
+        lanUrlDisplay.innerText = window.location.href;
+      }
+
+      if (qrContainer) {
+        qrContainer.innerHTML = ''; // 清除旧图
+        if (typeof QRCode !== 'undefined') {
+          qrCodeInstance = new QRCode(qrContainer, {
+            text: targetUrl,
+            width: 200,
+            height: 200,
+            colorDark: "#0F172A",
+            colorLight: "#FFFFFF",
+            correctLevel: QRCode.CorrectLevel.M
+          });
+        } else {
+          // Fallback image using quickchart API
+          qrContainer.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(targetUrl)}" alt="QR Code" width="200" height="200" style="display:block; border-radius:6px;">`;
+        }
+      }
+    }
+
     if (openBtn) {
       openBtn.addEventListener('click', () => {
-        const currentUrl = window.location.href;
-        if (urlDisplay) urlDisplay.innerText = currentUrl;
-        drawSimpleQRCode(qrCanvas, currentUrl);
+        renderRealQRCode();
         modal.classList.add('open');
       });
     }
@@ -892,63 +921,22 @@
     modal.addEventListener('click', (e) => {
       if (e.target === modal) modal.classList.remove('open');
     });
-  }
 
-  // 使用纯 JS 在 Canvas 上绘制自包含二维码
-  function drawSimpleQRCode(canvas, text) {
-    if (!canvas) return;
-    // 如果浏览器支持标准 QR 绘制，生成自适应高对比二维码
-    const ctx = canvas.getContext('2d');
-    const size = 200;
-    canvas.width = size;
-    canvas.height = size;
-    
-    // 背景
-    ctx.fillStyle = "#FFFFFF";
-    ctx.fillRect(0, 0, size, size);
-
-    // 绘制美化样式的二维码图案占位与定位角
-    ctx.fillStyle = "#0F172A";
-    
-    // 三个角上的定位块
-    function drawPositionPattern(x, y) {
-      ctx.fillRect(x, y, 42, 42);
-      ctx.clearRect(x + 6, y + 6, 30, 30);
-      ctx.fillRect(x + 12, y + 12, 18, 18);
+    if (copyBtn) {
+      copyBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(PUBLIC_APP_URL).then(() => {
+          const originalText = copyBtn.innerHTML;
+          copyBtn.innerHTML = '✅ 网址已成功复制到剪贴板！';
+          copyBtn.style.color = 'var(--accent-green)';
+          setTimeout(() => {
+            copyBtn.innerHTML = originalText;
+            copyBtn.style.color = '';
+          }, 2500);
+        }).catch(() => {
+          prompt('请手动长按复制下方公网网址：', PUBLIC_APP_URL);
+        });
+      });
     }
-    drawPositionPattern(14, 14);
-    drawPositionPattern(size - 56, 14);
-    drawPositionPattern(14, size - 56);
-
-    // 随机矩阵种子图案模拟
-    let hash = 0;
-    for (let i = 0; i < text.length; i++) {
-      hash = ((hash << 5) - hash) + text.charCodeAt(i);
-      hash |= 0;
-    }
-    
-    const cellSize = 6;
-    for (let r = 0; r < 24; r++) {
-      for (let c = 0; c < 24; c++) {
-        // 避开定位角区域
-        if ((r < 8 && c < 8) || (r < 8 && c > 15) || (r > 15 && c < 8)) continue;
-        const val = Math.abs(Math.sin(hash + r * 31 + c * 17));
-        if (val > 0.45) {
-          ctx.fillRect(20 + c * cellSize, 20 + r * cellSize, cellSize - 1, cellSize - 1);
-        }
-      }
-    }
-
-    // 中间放一个金色五角星标
-    ctx.fillStyle = "#D97706";
-    ctx.beginPath();
-    ctx.arc(size / 2, size / 2, 12, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.fillStyle = "#FFFFFF";
-    ctx.font = "bold 10px sans-serif";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText("128", size / 2, size / 2);
   }
 
   // ==========================================

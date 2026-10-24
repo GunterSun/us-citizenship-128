@@ -298,21 +298,37 @@
   <div class="modal-overlay" id="share-modal">
     <div class="modal-card">
       <div class="modal-header">
-        <h3>📱 在任何手机 / 平板上打开学习</h3>
+        <h3>📱 在任何人的手机 / 平板上打开使用</h3>
         <button class="modal-close-btn" id="btn-close-share">✕</button>
       </div>
       <div class="modal-body" style="text-align: center;">
-        <p style="margin-bottom: 12px;">
-          只需将手机或平板连接到与电脑相同的 Wi-Fi，用<strong>手机相机或微信扫一扫</strong>下方二维码即可立即使用：
+        <p style="margin-bottom: 12px; font-size: 0.9rem; line-height: 1.5;">
+          用<strong>手机微信扫一扫</strong>或<strong>手机相机直接对准</strong>下方二维码，任何手机/平板立刻打开：
         </p>
-        <div class="qr-code-box">
-          <canvas id="qr-canvas"></canvas>
+        
+        <!-- Genuine QR Code Container -->
+        <div class="qr-code-box" style="display:inline-block; padding:12px; background:#fff; border-radius:12px;">
+          <div id="qrcode-render-target"></div>
         </div>
-        <div style="background:var(--bg-primary); padding:10px; border-radius:8px; font-family:monospace; font-size:0.85rem; color:var(--accent-gold); word-break:break-all; margin-top:8px;" id="lan-url-display">
-          http://192.168.1.67:8128
+
+        <div style="margin-top: 14px; text-align: left; background: var(--bg-primary); padding: 12px 14px; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+          <div style="font-size: 0.75rem; color: var(--accent-gold); font-weight: 700; margin-bottom: 4px;">
+            🌐 全球通用永久网址（无需连同Wi-Fi，5G/微信直接打开）：
+          </div>
+          <div style="font-family: monospace; font-size: 0.88rem; color: #38BDF8; word-break: break-all; margin-bottom: 8px;" id="public-url-display">
+            https://guntersun.github.io/us-citizenship-128/
+          </div>
+          <button class="btn-icon" id="btn-copy-public-link" style="width: 100%; justify-content: center; font-size: 0.85rem; padding: 8px;">
+            📋 点击复制公网网址发给微信好友/长辈
+          </button>
         </div>
-        <p style="font-size:0.75rem; color:var(--text-dim); margin-top:12px;">
-          💡 技巧：在 iPhone Safari 中打开后，点击底部分享按钮选择 <strong>“添加到主屏幕”</strong>，即可像下载 App 一样全屏无网络离线使用！
+
+        <div style="margin-top: 10px; text-align: left; background: rgba(255,255,255,0.03); padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.78rem; color: var(--text-dim);">
+          💻 局域网备用地址：<span id="lan-url-display" style="color:var(--text-muted); font-family:monospace;">http://192.168.1.67:8128</span>
+        </div>
+
+        <p style="font-size:0.75rem; color:var(--text-dim); margin-top:12px; line-height:1.4;">
+          💡 <strong>添加到手机主屏幕教程</strong>：在手机 Safari 或 Chrome 打开后，点击底部的【分享】按钮 ➔ 选择【添加到主屏幕】，即成为与 App Store 下载完全一样的独立手机 APP，图标永久留在桌面上！
         </p>
       </div>
     </div>
@@ -379,6 +395,7 @@
   </div>
 
   <!-- Scripts -->
+  <script src="assets/js/qrcode.min.js"></script>
   <script src="data/questions.js"></script>
   <script src="assets/js/app.js"></script>
 </body>
